@@ -8,9 +8,9 @@ module.exports = function(source, sourceMap) {
     return this.callback(null, source, sourceMap)
   }
 
-  if (typeof replace !== 'object') {
+  if (!Array.isArray(replace)) {
     return this.callback(
-      new Error('replace must be a object'),
+      new Error('replace must be a array'),
       source,
       sourceMap
     )
@@ -18,8 +18,10 @@ module.exports = function(source, sourceMap) {
 
 
   let result
-  Object.keys(replace).forEach(key => {
-    result = source.replace(key, replace[key])
+  replace.forEach(item => {
+    const { from, to } = item
+
+    result = source.replace(from, to)
   })
 
   return this.callback(null, result, sourceMap)
